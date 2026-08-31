@@ -107,16 +107,36 @@ const getProfile = async (req,res)=>{
     
 }
 
-//Edit profile
+//Update profile
 const editProfile = async (req,res)=>{
     try {
         const {username,bio,email} = req.body;
-        const buffer = req.file.buffer;
+        const buffer = req.file;
         const pfp = await uploadImage(buffer)
         const user = await userModel.findByIdAndUpdate(req.userID,{username:username,pfp:pfp.url,bio:bio,email:email})
+        res.status(200).json({
+            message:"profile updated",
+        })
     } catch (error) {
-        
+        console.log("error:",error);
     }
 }
 
-module.exports = {register,login,logout,getProfile,editProfile}
+const getSuggestedUser = async (req,res) =>{
+    try {
+        const suggestedUsers = await userModel.find({_id:{$ne:req.id}}).select("-password")
+        if(!suggestedUsers){
+            return res.status(404).json({
+                message:"No suggested users"
+            })
+        }
+        res.status(200).json({
+            message:"Found suggested users",
+            suggestedUsers:suggestedUsers
+        })
+    } catch (error) {
+        console.log("error:",error);
+    }
+}
+
+module.exports = {register,login,logout,getProfile,editProfile,getSuggestedUser}

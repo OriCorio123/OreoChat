@@ -6,7 +6,8 @@ const uploadImage = async (buffer) => {
     });
 
     const response = await client.files.upload({
-        file: buffer.toString('base64'),
+        file: buffer.buffer.toString('base64'),
+        fileName:"pfp"+buffer.originalname,
         folder:'OreoChat/pfp'
     });
     return response;
