@@ -9,5 +9,6 @@ router.post('/login',userController.login)
 router.get('/logout',userController.logout)
 router.get('/profile/:username',userController.getProfile)
 router.post('/profile/me',isLoggedIn,upload.single('pfp'),userController.editProfile)
+router.get('/follow/:username',isLoggedIn,userController.followUnfollow)
 
 module.exports = router;

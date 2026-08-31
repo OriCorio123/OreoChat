@@ -91,12 +91,18 @@ const logout = (req,res)=>{
     })
 }
 
-//Profile information
+//Profile information !!! msg "user found" even if the username doesnt exist => solved
 const getProfile = async (req,res)=>{
     const username = req.params.username;
 
     try {
         const user = await userModel.findOne({username:username}).select('-password');
+        if(!user){
+            return res.status(404).json({
+                message:"username not found",
+                success:false
+            })
+        }
         res.status(200).json({
             message:"User found",
             user:user
@@ -139,4 +145,39 @@ const getSuggestedUser = async (req,res) =>{
     }
 }
 
-module.exports = {register,login,logout,getProfile,editProfile,getSuggestedUser}
+//I have to design the follow and unfollow logic => done
+//throws error when username doesnt exists
+const followUnfollow = async (req,res)=>{
+    const targetUsername = req.params.username; //req.userID = user's username (from isLoggedIn middleware)
+    try {
+        const targetUser = await userModel.findOne({username:targetUsername}).select("-password")
+        const user = await userModel.findById(req.userID).select("-password")
+        if(!targetUser || !user){
+            return res.status(404).json({
+                message:"username not found",
+                success:false
+            })
+        }
+        if(user.following.includes(targetUser._id)){
+            //unfollow
+            await Promise.all([
+                userModel.findByIdAndUpdate(user._id,{$pull:{following:targetUser._id}}),
+                userModel.findByIdAndUpdate(targetUser._id,{$pull:{followers:user._id}})
+            ])
+        }else{
+            //follow
+            await Promise.all([
+                userModel.findByIdAndUpdate(user._id,{$push:{following:targetUser._id}}),
+                userModel.findByIdAndUpdate(targetUser._id,{$push:{followers:user._id}})
+            ])
+        }
+        res.status(200).json({
+            message:"Following status uppdated",
+            success:true
+        })
+    } catch (error) {
+        console.log("error:",error)
+    }
+}
+
+module.exports = {register,login,logout,getProfile,editProfile,getSuggestedUser,followUnfollow}
