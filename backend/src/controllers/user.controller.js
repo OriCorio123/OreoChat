@@ -61,7 +61,7 @@ const login = async (req,res)=>{
 
         if(!isPasswordValid){
             return res.status(401).json({
-                messsage:"Incorrect Password",
+                message:"Incorrect Password",
                 success:false
             })
         }
