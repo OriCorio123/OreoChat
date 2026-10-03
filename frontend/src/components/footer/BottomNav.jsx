@@ -13,7 +13,7 @@ const BottomNav = ({ userAvatarUrl = "https://github.com/shadcn.png" }) => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-14 w-full items-center justify-around border-t bg-background/95 px-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-14 w-full items-center justify-around border-t bg-background/95 px-2 backdrop-blur">
       {navItems.map(({ to, icon: Icon, label, fillable }) => (
         <NavLink key={to} to={to} className="outline-none">
           {({ isActive }) => (
