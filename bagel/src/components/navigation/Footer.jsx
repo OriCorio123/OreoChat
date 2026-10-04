@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <div className='h-11 bg-pink-300 flex place-content-around px-5'>
+    <div className='flex border-t-[0.5px] border-gray-100 place-content-around px-5 pb-2 pt-3'>
       <Link to='/'>
         <div className='h-10 w-10'>
           <Home />

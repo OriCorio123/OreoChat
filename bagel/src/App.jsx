@@ -1,11 +1,11 @@
 import Header from './components/navigation/Header'
 import Footer from './components/navigation/Footer'
-import Body from './components/navigation/Body'
+import Body from './components/Body'
 
 
 const App = () => {
   return (
-    <div className='min-h-dvh w-full flex flex-col place-content-between'>
+    <div className='max-h-screen w-full flex flex-col'>
       <Header/>
       <Body/>
       <Footer/>
