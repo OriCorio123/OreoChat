@@ -25,7 +25,6 @@ const Upload = () => {
     }
   };
 
-  // Prevent memory leaks from created object URLs
   useEffect(() => {
     return () => {
       if (previewUrl) {
